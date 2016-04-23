@@ -7,7 +7,7 @@
 
 import sqlalchemy
 from flask import render_template, Blueprint, url_for, \
-    redirect, request
+    redirect, request, flash
 from flask.ext.login import login_user
 
 from project.server import db
@@ -33,19 +33,25 @@ def register():
         email = User.query.filter_by(email=form.email.data).first()
         username = User.query.filter_by(
             username=form.username.data).first()
-        if email is None and username is None:
-            user = User(
-                email=form.email.data,
-                username=form.username.data,
-                password=form.password.data
-            )
-            try:
-                db.session.add(user)
-                db.session.commit()
-                login_user(user)
-            except sqlalchemy.exc.IntegrityError as err:
-                print('Handle Error:{0}'.format(err))
+        if email is not None:
+            flash('Email must be unique.', 'danger')
             return redirect(url_for("user.register"))
-        else:
-            print('Handle Error')
+        if username is not None:
+            flash('Username must be unique.', 'danger')
+            return redirect(url_for("user.register"))
+        user = User(
+            email=form.email.data,
+            username=form.username.data,
+            password=form.password.data
+        )
+        try:
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash('Thank you for registering.', 'success')
+        except sqlalchemy.exc.IntegrityError as err:
+            print('Handle Error:{0}'.format(err))
+            flash('Something terrible happened.', 'danger')
+        return redirect(url_for("user.register"))
+        flash('Thank you for registering.', 'success')
     return render_template('user/register.html', form=form)
