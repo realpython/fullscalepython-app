@@ -10,13 +10,18 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager
+from flask_bootstrap import Bootstrap
 
 
 ############
 #  config  #
 ############
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder='../client/templates',
+    static_folder='../client/static'
+)
 
 
 if 'APP_SETTINGS' in os.environ:
@@ -34,6 +39,7 @@ app.config.from_object(app_settings)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 from project.server.models import User
