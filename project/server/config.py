@@ -11,6 +11,7 @@ class BaseConfig(object):
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
+    WTF_CSRF_ENABLED = True
 
 
 class DevelopmentConfig(BaseConfig):
@@ -18,6 +19,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
     BCRYPT_LOG_ROUNDS = 4
+    WTF_CSRF_ENABLED = False
 
 
 class TestingConfig(BaseConfig):
@@ -26,6 +28,7 @@ class TestingConfig(BaseConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'
     BCRYPT_LOG_ROUNDS = 4
+    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(BaseConfig):
