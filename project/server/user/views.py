@@ -55,3 +55,18 @@ def register():
         return redirect(url_for("user.register"))
         flash('Thank you for registering.', 'success')
     return render_template('user/register.html', form=form)
+
+
+@user_blueprint.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('user/login.html')
+
+
+@user_blueprint.route('/logout')
+def logout():
+    return 'logout!'
+
+
+@user_blueprint.route('/profile/<username>')
+def account(username):
+    return username
