@@ -7,5 +7,13 @@
   </header>
 
   <br>
+  <p>
+    <span class="glyphicon glyphicon-envelope"></span>
+    <span><a href="mailto:{{user.email}}">{{user.email}}</a></span>
+  </p>
+  <p>
+    <span class="glyphicon glyphicon-calendar"></span>
+    <span>Joined on {{user.registered_on.strftime('%d-%m-%Y')}}</span>
+  </p>
 
 {% endblock content %}
