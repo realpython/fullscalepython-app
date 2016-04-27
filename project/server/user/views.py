@@ -65,12 +65,13 @@ def login():
         if user and bcrypt.check_password_hash(
                 user.password, request.form['password']):
             login_user(user)
+            flash('You are logged in. Welcome!', 'success')
             return redirect(url_for(
                 'user.account',
                 username=user.username)
             )
         else:
-            print('Handle Error')
+            flash('Invalid email and/or password.', 'danger')
     return render_template('user/login.html', form=form)
 
 
@@ -83,6 +84,7 @@ def logout():
 def account(username):
     user = User.query.filter_by(username=username).first()
     if not user:
-        print('Handle Error')
+        flash('Please login.', 'danger')
+        return redirect(url_for('user.login'))
     else:
         return render_template('user/account.html', user=user)
