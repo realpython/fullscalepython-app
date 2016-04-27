@@ -8,7 +8,8 @@
 import sqlalchemy
 from flask import render_template, Blueprint, url_for, \
     redirect, request, flash
-from flask.ext.login import login_user
+from flask.ext.login import login_user, logout_user, login_required, \
+    current_user
 
 from project.server import db, bcrypt
 from project.server.models import User
@@ -66,25 +67,26 @@ def login():
                 user.password, request.form['password']):
             login_user(user)
             flash('You are logged in. Welcome!', 'success')
-            return redirect(url_for(
-                'user.account',
-                username=user.username)
-            )
+            return redirect(url_for('user.account', id=user.id))
         else:
             flash('Invalid email and/or password.', 'danger')
     return render_template('user/login.html', form=form)
 
 
 @user_blueprint.route('/logout')
+@login_required
 def logout():
-    return 'logout!'
+    logout_user()
+    flash('You were logged out. Bye!', 'success')
+    return redirect(url_for('user.login'))
 
 
-@user_blueprint.route('/profile/<username>')
-def account(username):
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        flash('Please login.', 'danger')
-        return redirect(url_for('user.login'))
+@user_blueprint.route('/profile/<id>')
+@login_required
+def account(id):
+    user = User.query.filter_by(id=id).first()
+    if not user or current_user.id is not user.id:
+        flash('You are not authorized to access that page.', 'danger')
+        return redirect(url_for('user.account', id=current_user.id))
     else:
         return render_template('user/account.html', user=user)
