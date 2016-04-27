@@ -36,3 +36,19 @@ class RegisterForm(Form):
             EqualTo('password', message='Passwords must match.')
         ]
     )
+
+
+class LoginForm(Form):
+    email = TextField(
+        'Email Address',
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+    password = PasswordField(
+        'Password',
+        validators=[
+            DataRequired()
+        ]
+    )
