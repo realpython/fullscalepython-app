@@ -2,8 +2,19 @@
 
 
 import datetime
+from sqlalchemy.inspection import inspect
 
 from project.server import app, db, bcrypt
+
+
+class Serializer(object):
+
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+    @staticmethod
+    def serialize_list(l):
+        return [m.serialize() for m in l]
 
 
 class User(db.Model):
@@ -42,7 +53,7 @@ class User(db.Model):
         return '<User {0}>'.format(self.username)
 
 
-class Bathroom(db.Model):
+class Bathroom(db.Model, Serializer):
 
     __tablename__ = 'bathrooms'
 

@@ -1,11 +1,13 @@
 # manage.py
 
 
+import csv
 import unittest
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
+from project.server.models import Bathroom
 
 
 migrate = Migrate(app, db)
@@ -35,6 +37,19 @@ def create_db():
 def drop_db():
     """Drops the db tables."""
     db.drop_all()
+
+
+@manager.command
+def seed():
+    """Seeds the db."""
+    with open('bathrooms.csv', 'rt') as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            db.session.add(Bathroom(
+                name=row[0], location=row[1])
+            )
+    db.session.commit()
 
 
 if __name__ == "__main__":
