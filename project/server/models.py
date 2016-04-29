@@ -6,20 +6,6 @@ import datetime
 from project.server import app, db, bcrypt
 
 
-class Bathroom(db.Model):
-
-    __tablename__ = 'bathrooms'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), nullable=False)
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return '<Bathroom {0}>'.format(self.name)
-
-
 class User(db.Model):
 
     __tablename__ = 'users'
@@ -54,3 +40,19 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User {0}>'.format(self.username)
+
+
+class Bathroom(db.Model):
+
+    __tablename__ = 'bathrooms'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, name, location):
+        self.name = name
+        self.location = location
+
+    def __repr__(self):
+        return '<Bathroom {0}>'.format(self.name)

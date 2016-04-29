@@ -50,10 +50,7 @@ from project.server.models import User
 ################
 
 from project.server.user.views import user_blueprint
-from project.server.bathroom.views import bathroom_blueprint
-
 app.register_blueprint(user_blueprint, url_prefix='/auth')
-app.register_blueprint(bathroom_blueprint, url_prefix='/bathrooms')
 
 
 #################

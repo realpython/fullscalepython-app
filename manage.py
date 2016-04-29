@@ -6,7 +6,6 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
-from project.server.models import Bathroom
 
 
 migrate = Migrate(app, db)
@@ -36,13 +35,6 @@ def create_db():
 def drop_db():
     """Drops the db tables."""
     db.drop_all()
-
-
-@manager.command
-def seed():
-    """Seeds the db."""
-    db.session.add(Bathroom(name='Gold Room'))
-    db.session.commit()
 
 
 if __name__ == "__main__":
