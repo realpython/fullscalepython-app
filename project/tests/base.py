@@ -4,7 +4,7 @@
 from flask.ext.testing import TestCase
 
 from project.server import app, db
-from project.server.models import User
+from project.server.models import User, Bathroom
 
 
 class BaseTestCase(TestCase):
@@ -26,8 +26,13 @@ class BaseTestCase(TestCase):
             username='duplicate_user',
             password='duplicate_user'
         )
+        data = Bathroom(
+            name='test bathroom',
+            location='NYC'
+        )
         db.session.add(user)
         db.session.add(duplicate_user)
+        db.session.add(data)
         db.session.commit()
 
     def tearDown(self):

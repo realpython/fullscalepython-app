@@ -6,7 +6,7 @@
 #############
 
 import json
-from flask import Blueprint
+from flask import Blueprint, Response
 
 from project.server.models import Bathroom
 
@@ -25,4 +25,8 @@ bathroom_blueprint = Blueprint('bathroom', __name__,)
 @bathroom_blueprint.route('/')
 def get_all_bathrooms():
     all_bathrooms = Bathroom.query.all()
-    return json.dumps(Bathroom.serialize_list(all_bathrooms))
+    resp = Response(
+        json.dumps(Bathroom.serialize_list(all_bathrooms)),
+        mimetype='application/json'
+    )
+    return resp
