@@ -17,7 +17,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/kastanza'
     BCRYPT_LOG_ROUNDS = 4
     WTF_CSRF_ENABLED = False
 
@@ -26,7 +26,7 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/kastanza_test'
     BCRYPT_LOG_ROUNDS = 4
     WTF_CSRF_ENABLED = False
 

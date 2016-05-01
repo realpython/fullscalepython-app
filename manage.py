@@ -8,6 +8,7 @@ from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
 from project.server.models import Bathroom
+from project.server.bathroom.geodata import get_geodata
 
 
 migrate = Migrate(app, db)
@@ -46,9 +47,12 @@ def seed():
         reader = csv.reader(f)
         next(reader, None)
         for row in reader:
+            geodata = get_geodata(row[1])
             db.session.add(Bathroom(
-                name=row[0], location=row[1])
-            )
+                name=row[0],
+                location=row[1],
+                latlong=(geodata["results"][0]["geometry"]["location"])
+            ))
     db.session.commit()
 
 

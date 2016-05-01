@@ -3,6 +3,7 @@
 
 import datetime
 from sqlalchemy.inspection import inspect
+from sqlalchemy.dialects.postgresql import JSON
 
 from project.server import app, db, bcrypt
 
@@ -60,6 +61,7 @@ class Bathroom(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
+    latlong = db.Column(JSON, nullable=False)
 
     def __init__(self, name, location):
         self.name = name
