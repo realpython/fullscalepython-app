@@ -1,14 +1,12 @@
 # manage.py
 
 
-import csv
 import unittest
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
 from project.server.models import Bathroom
-from project.server.bathroom.geodata import get_geodata
 
 
 migrate = Migrate(app, db)
@@ -43,17 +41,45 @@ def drop_db():
 @manager.command
 def seed():
     """Seeds the db."""
-    with open('bathrooms.csv', 'rt') as f:
-        reader = csv.reader(f)
-        next(reader, None)
-        for row in reader:
-            geodata = get_geodata(row[1])
-            db.session.add(Bathroom(
-                name=row[0],
-                location=row[1],
-                latlong=(geodata["results"][0]["geometry"]["location"])
-            ))
-    db.session.commit()
+    # from pprint import pprint
+    import requests
+    import json
+
+    URL = "https://maps.googleapis.com/maps/api/geocode/json"
+
+    def get_geodata(address):
+        payload = {'address': address}
+        response = requests.get(URL, params=payload)
+        return response.json()
+
+    new_data = []
+    with open('bathrooms.json') as file:
+        data = json.load(file)
+    for line in data:
+        try:
+            geodata = get_geodata(line['location'])
+            new_data.append(
+                {
+                    'borough': line.borough,
+                    'location': line.location,
+                    'name': line.name,
+                    'open_year_round': line.open_year_round,
+                    'handicap_accessible': line.handicap_accessible,
+                    'latlong': geodata["results"][0]["geometry"]["location"]
+                })
+        except:
+            geodata = get_geodata(line['name'])
+            new_data.append(
+                {
+                    'borough': line.borough,
+                    'location': line.location,
+                    'name': line.name,
+                    'open_year_round': line.open_year_round,
+                    'handicap_accessible': line.handicap_accessible,
+                    'latlong': geodata["results"][0]["geometry"]["location"]
+                })
+        else:
+            print(line)
 
 
 if __name__ == "__main__":
