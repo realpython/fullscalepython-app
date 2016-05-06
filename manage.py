@@ -45,6 +45,7 @@ def seed():
     import requests
     import json
 
+    new_data = []
     URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
     def get_geodata(address):
@@ -52,34 +53,29 @@ def seed():
         response = requests.get(URL, params=payload)
         return response.json()
 
-    new_data = []
     with open('bathrooms.json') as file:
         data = json.load(file)
-    for line in data:
-        try:
-            geodata = get_geodata(line['location'])
-            new_data.append(
-                {
-                    'borough': line.borough,
-                    'location': line.location,
-                    'name': line.name,
-                    'open_year_round': line.open_year_round,
-                    'handicap_accessible': line.handicap_accessible,
-                    'latlong': geodata["results"][0]["geometry"]["location"]
-                })
-        except:
-            geodata = get_geodata(line['name'])
-            new_data.append(
-                {
-                    'borough': line.borough,
-                    'location': line.location,
-                    'name': line.name,
-                    'open_year_round': line.open_year_round,
-                    'handicap_accessible': line.handicap_accessible,
-                    'latlong': geodata["results"][0]["geometry"]["location"]
-                })
-        else:
-            print(line)
+        with open('bathrooms2.json', 'w') as outfile:
+            for line in data:
+                updated_data = {}
+                if hasattr(line, 'handicap_accessible'):
+                    handicap = line['handicap_accessible']
+                else:
+                    handicap = 'No'
+                try:
+                    geodata = get_geodata(line['location'])
+                    updated_data = {
+                        'borough': line['borough'],
+                        'location': line['location'],
+                        'name': line['name'],
+                        'open_year_round': line['open_year_round'],
+                        'handicap_accessible': handicap,
+                        'latlong': geodata["results"][0]["geometry"]["location"]
+                    }
+                    new_data.append(updated_data)
+                except:
+                    pass
+            json.dump(new_data, outfile)
 
 
 if __name__ == "__main__":
