@@ -51,9 +51,11 @@ from project.server.models import User
 
 from project.server.user.views import user_blueprint
 from project.server.bathroom.views import bathroom_blueprint
+from project.server.main.views import main_blueprint
 
 app.register_blueprint(user_blueprint, url_prefix='/auth')
 app.register_blueprint(bathroom_blueprint, url_prefix='/bathrooms')
+app.register_blueprint(main_blueprint, url_prefix='/')
 
 
 #################
@@ -69,12 +71,3 @@ login_manager.login_message_category = 'danger'
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter(User.id == int(user_id)).first()
-
-
-############
-#  routes  #
-############
-
-@app.route("/")
-def hello():
-    return "Hello World!"
