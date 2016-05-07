@@ -20,7 +20,7 @@ def main():
         row = next(reader)
         try:
             geodata = get_geodata(row[0] + ',' + row[4])["results"][0]["geometry"]["location"]
-            writer.writerow(row + [geodata['lat'], geodata['lng']])
+            writer.writerow(row + [geodata])
         except IndexError as e:
             print(e)
             writer.writerow(row + ['null', 'null'])

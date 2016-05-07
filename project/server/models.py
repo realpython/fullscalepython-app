@@ -61,11 +61,18 @@ class Bathroom(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
+    open_year_round = db.Column(db.Boolean, nullable=False)
+    handicap_accessible = db.Column(db.Boolean, nullable=False)
+    borough = db.Column(db.String(255), nullable=False)
     latlong = db.Column(JSON, nullable=False)
 
-    def __init__(self, name, location):
+    def __init__(self, name, location, open_year_round, handicap_accessible, borough, latlong):
         self.name = name
         self.location = location
+        self.open_year_round = open_year_round
+        self.handicap_accessible = handicap_accessible
+        self.borough = borough
+        self.latlong = latlong
 
     def __repr__(self):
         return '<Bathroom {0}>'.format(self.name)

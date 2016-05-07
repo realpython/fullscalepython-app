@@ -1,6 +1,7 @@
 # manage.py
 
 
+import csv
 import unittest
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -41,41 +42,27 @@ def drop_db():
 @manager.command
 def seed():
     """Seeds the db."""
-    # from pprint import pprint
-    import requests
-    import json
-
-    new_data = []
-    URL = "https://maps.googleapis.com/maps/api/geocode/json"
-
-    def get_geodata(address):
-        payload = {'address': address}
-        response = requests.get(URL, params=payload)
-        return response.json()
-
-    with open('bathrooms.json') as file:
-        data = json.load(file)
-        with open('bathrooms2.json', 'w') as outfile:
-            for line in data:
-                updated_data = {}
-                if hasattr(line, 'handicap_accessible'):
-                    handicap = line['handicap_accessible']
-                else:
-                    handicap = 'No'
-                try:
-                    geodata = get_geodata(line['location'])
-                    updated_data = {
-                        'borough': line['borough'],
-                        'location': line['location'],
-                        'name': line['name'],
-                        'open_year_round': line['open_year_round'],
-                        'handicap_accessible': handicap,
-                        'latlong': geodata["results"][0]["geometry"]["location"]
-                    }
-                    new_data.append(updated_data)
-                except:
-                    pass
-            json.dump(new_data, outfile)
+    with open('bathrooms.csv', 'rt') as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if row[2] == 'Yes':
+                openBoolean = True
+            else:
+                openBoolean = False
+            if row[3] == 'Yes':
+                handicapBoolean = True
+            else:
+                handicapBoolean = False
+            db.session.add(Bathroom(
+                name=row[0],
+                location=row[1],
+                open_year_round=openBoolean,
+                handicap_accessible=handicapBoolean,
+                borough=row[4],
+                latlong=row[5]
+            ))
+    db.session.commit()
 
 
 if __name__ == "__main__":
