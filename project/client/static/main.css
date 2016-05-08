@@ -3,3 +3,18 @@
 .site-content {
   padding-top: 75px;
 }
+
+.canvas {
+  height: 500px;
+  width: auto;
+}
+
+li:hover {
+  cursor:pointer;
+  cursor:hand;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+}
