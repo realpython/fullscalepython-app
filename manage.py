@@ -54,14 +54,15 @@ def seed():
                 handicapBoolean = True
             else:
                 handicapBoolean = False
-            db.session.add(Bathroom(
-                name=row[0],
-                location=row[1],
-                open_year_round=openBoolean,
-                handicap_accessible=handicapBoolean,
-                borough=row[4],
-                latlong=row[5]
-            ))
+            if row[4] == 'Manhattan':
+                db.session.add(Bathroom(
+                    name=row[0],
+                    location=row[1],
+                    open_year_round=openBoolean,
+                    handicap_accessible=handicapBoolean,
+                    borough=row[4],
+                    latlong=row[5]
+                ))
     db.session.commit()
 
 
