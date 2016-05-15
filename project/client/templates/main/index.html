@@ -11,6 +11,11 @@
     </div>
     <div class="col-md-4">
       <h2>Bathrooms</h2>
+      <ul id="list">
+        {% for bathroom in bathrooms %}
+          <li>{{ bathroom.name }}</li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 
