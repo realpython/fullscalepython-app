@@ -7,6 +7,8 @@
 
 from flask import Blueprint, render_template
 
+from project.server.models import Bathroom
+
 
 ############
 #  config  #
@@ -21,4 +23,7 @@ main_blueprint = Blueprint('main', __name__,)
 
 @main_blueprint.route("/")
 def index():
-    return render_template('main/index.html')
+    return render_template(
+        'main/index.html',
+        bathrooms=Bathroom.query.all()
+    )
