@@ -28,7 +28,11 @@ class BaseTestCase(TestCase):
         )
         data = Bathroom(
             name='test bathroom',
-            location='NYC'
+            location='NYC',
+            open_year_round=True,
+            handicap_accessible=True,
+            borough='Manhattan',
+            latlong="{'lng': -73.9712488, 'lat': 40.7830603}"
         )
         db.session.add(user)
         db.session.add(duplicate_user)

@@ -43,13 +43,6 @@ $(document).ready(function () {
             map.setCenter(marker.getPosition());
             infowindow.open(map, marker);
           });
-          // add list of markers
-          $('<li/>')
-            .html(marker.title)
-            .click(function(){
-              map.panTo(marker.getPosition());
-            })
-            .appendTo('#list');
           counter++;
         })
         .fail(function(err){
