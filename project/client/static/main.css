@@ -13,3 +13,7 @@
   position: relative;
   width: 100%;
 }
+
+.bathroom-list li {
+  cursor: pointer;
+}

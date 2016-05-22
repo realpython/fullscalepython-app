@@ -1,54 +1,68 @@
 $(document).ready(function () {
+  initializeMap();
+});
 
-  // initialize the map
-  var map;
+var infowindow;
+
+// initialize the map
+function initializeMap() {
+  var centerMap = new google.maps.LatLng(40.7829, -73.9654);
   var myOptions = {
     zoom: 12,
-    center: new google.maps.LatLng(40.7829, -73.9654)
+    center: centerMap,
   };
-  map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
-  var counter = 1;
-
+  var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
   // grab data points from the API
-  $.getJSON('http://localhost:5000/bathrooms', function(bathroom) {
-    var markersArray = [];
-    var nameArray = [];
-    var location;
-    $.each(bathroom, function (i, item) {
-      parsedData = JSON.parse(item.latlong.replace(/'/g, '"'));
+  $.getJSON('http://localhost:5000/bathrooms')
+  .done(function(bathrooms) {
+    var allBathrooms = bathrooms.map(function(bathroom) {
+      parsedData = JSON.parse(bathroom.latlong.replace(/'/g, '"'));
       latlong = parsedData.lat + ',' + parsedData.lng;
-      markersArray.push(latlong);
-      nameArray.push(item.name);
+      return {
+        latlong: latlong,
+        name: bathroom.name
+      };
     });
-
-    // loop through the array, add new marker
-    for (var x=0; x < markersArray.length; x++) {
-      $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDRG3RXgL59DvWnxRgKhPDQLKzhYbD3R9E&address='+markersArray[x])
-        .done(function(data) {
-          var p = data.results[0].geometry.location;
-          var latlng = new google.maps.LatLng(p.lat, p.lng);
-          // create new marker
-          var marker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-            title: nameArray[counter-1]
-          });
-          // create info window
-          var infowindow = new google.maps.InfoWindow({
-            content: '<h4>'+nameArray[counter-1]+'</h4>'
-          });
-          // click to zoom
-          google.maps.event.addListener(marker, 'click', function() {
-            map.setZoom(13);
-            map.setCenter(marker.getPosition());
-            infowindow.open(map, marker);
-          });
-          counter++;
-        })
-        .fail(function(err){
-          console.log(err);
-        });
-    }
+    setMarkers(map, allBathrooms);
+    infowindow = new google.maps.InfoWindow({
+      content: "loading..."
+    });
   });
+}
 
-});
+// loop through the data returned from the api, add new marker
+function setMarkers(map, bathrooms) {
+  var markers = [];
+  bathrooms.forEach(function(bathroom) {
+    $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDRG3RXgL59DvWnxRgKhPDQLKzhYbD3R9E&address='+bathroom.latlong)
+    .done(function(data) {
+      var p = data.results[0].geometry.location;
+      var latlng = new google.maps.LatLng(p.lat, p.lng);
+      // create new marker
+      var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: bathroom.name
+      });
+      markers.push(marker);
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(this.title);
+        infowindow.open(map, this);
+      });
+      // click to zoom
+      $('#list li').on('click', function() {
+        map.setZoom(12);
+        map.setCenter(new google.maps.LatLng(40.7829, -73.9654));
+        var bathroomName = $(this).html();
+        markers.forEach(function(marker) {
+          if(marker.title === bathroomName) {
+            map.setZoom(13);
+            map.setCenter(marker.position);
+            infowindow.setContent(bathroomName);
+            infowindow.open(map, marker);
+          }
+        });
+      });
+    });
+  });
+}
