@@ -13,6 +13,8 @@ class TestMainBlueprint(BaseTestCase):
         response = self.client.get('/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Map', response.data)
+        self.assertIn(b'<h2>Bathrooms</h2>', response.data)
+        self.assertIn(b'<li>test bathroom</li>', response.data)
 
 
 if __name__ == '__main__':
