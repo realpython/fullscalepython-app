@@ -28,10 +28,13 @@ def index():
     updated_bathrooms = []
     for bathroom in all_bathrooms:
         bathroom.rating = 0
+        count = -1
         for rating in all_ratings:
             if bathroom.id == rating.bathroom_id:
                 if rating.rating is not None:
                     bathroom.rating += rating.rating
+                    count += 1
+        bathroom.ratings_count = count
         updated_bathrooms.append(bathroom)
     return render_template(
         'main/index.html',
