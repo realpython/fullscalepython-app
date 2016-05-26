@@ -76,3 +76,19 @@ class Bathroom(db.Model, Serializer):
 
     def __repr__(self):
         return '<Bathroom {0}>'.format(self.name)
+
+
+class Ratings(db.Model):
+
+    __tablename__ = 'ratings'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    bathroom_id = db.Column(db.Integer, db.ForeignKey('bathrooms.id'))
+    rating = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, rating):
+        self.rating = rating
+
+    def __repr__(self):
+        return '<Rating {0}>'.format(self.rating)
