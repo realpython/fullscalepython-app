@@ -87,7 +87,9 @@ class Ratings(db.Model):
     bathroom_id = db.Column(db.Integer, db.ForeignKey('bathrooms.id'))
     rating = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, rating):
+    def __init__(self, bathroom_id, rating, user_id=None):
+        self.user_id = user_id
+        self.bathroom_id = bathroom_id
         self.rating = rating
 
     def __repr__(self):
