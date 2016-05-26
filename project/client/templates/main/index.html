@@ -13,7 +13,9 @@
       <h2>Bathrooms</h2>
       <ul id="list" class="bathroom-list">
         {% for bathroom in bathrooms %}
-          <li>{{ bathroom.name }}</li>
+          {% if bathroom.ratings_count == 0 %}
+            <li><span class="bathroom-name" id="clickable-name">{{ bathroom.name }}</span><br>No reviews yet!</li>
+          {% endif %}
         {% endfor %}
       </ul>
     </div>

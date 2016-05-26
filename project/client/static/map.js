@@ -50,7 +50,7 @@ function setMarkers(map, bathrooms) {
         infowindow.open(map, this);
       });
       // click to zoom
-      $('#list li').on('click', function() {
+      $('#list').on('click', '#clickable-name', function() {
         map.setZoom(12);
         map.setCenter(new google.maps.LatLng(40.7829, -73.9654));
         var bathroomName = $(this).html();
