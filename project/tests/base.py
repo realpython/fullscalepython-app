@@ -32,7 +32,9 @@ class BaseTestCase(TestCase):
             open_year_round=True,
             handicap_accessible=True,
             borough='Manhattan',
-            latlong="{'lng': -73.9712488, 'lat': 40.7830603}"
+            latlong="{'lng': -73.9712488, 'lat': 40.7830603}",
+            rating=0,
+            rating_count=0
         )
         db.session.add(user)
         db.session.add(duplicate_user)

@@ -65,32 +65,18 @@ class Bathroom(db.Model, Serializer):
     handicap_accessible = db.Column(db.Boolean, nullable=False)
     borough = db.Column(db.String(255), nullable=False)
     latlong = db.Column(JSON, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    rating_count = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, location, open_year_round, handicap_accessible, borough, latlong):
+    def __init__(self, name, location, open_year_round, handicap_accessible, borough, latlong, rating, rating_count):
         self.name = name
         self.location = location
         self.open_year_round = open_year_round
         self.handicap_accessible = handicap_accessible
         self.borough = borough
         self.latlong = latlong
+        self.rating = rating
+        self.rating_count = rating_count
 
     def __repr__(self):
         return '<Bathroom {0}>'.format(self.name)
-
-
-class Ratings(db.Model):
-
-    __tablename__ = 'ratings'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    bathroom_id = db.Column(db.Integer, db.ForeignKey('bathrooms.id'))
-    rating = db.Column(db.Integer, nullable=False)
-
-    def __init__(self, bathroom_id, rating, user_id=None):
-        self.user_id = user_id
-        self.bathroom_id = bathroom_id
-        self.rating = rating
-
-    def __repr__(self):
-        return '<Rating {0}>'.format(self.rating)

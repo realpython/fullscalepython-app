@@ -7,7 +7,7 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
-from project.server.models import Bathroom, Ratings
+from project.server.models import Bathroom
 
 
 migrate = Migrate(app, db)
@@ -61,16 +61,12 @@ def seed():
                     open_year_round=openBoolean,
                     handicap_accessible=handicapBoolean,
                     borough=row[4],
-                    latlong=row[5]
+                    latlong=row[5],
+                    rating=0,
+                    rating_count=0
                 ))
     db.session.commit()
-    all_bathrooms = Bathroom.query.all()
-    for bathroom in all_bathrooms:
-        db.session.add(Ratings(
-            bathroom_id=bathroom.id,
-            rating=0
-        ))
-    db.session.commit()
+
 
 if __name__ == "__main__":
     manager.run()

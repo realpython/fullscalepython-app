@@ -7,7 +7,7 @@
 
 from flask import Blueprint, render_template
 
-from project.server.models import Bathroom, Ratings
+from project.server.models import Bathroom
 
 
 ############
@@ -23,20 +23,7 @@ main_blueprint = Blueprint('main', __name__,)
 
 @main_blueprint.route("/")
 def index():
-    all_ratings = Ratings.query.all()
-    all_bathrooms = Bathroom.query.all()
-    updated_bathrooms = []
-    for bathroom in all_bathrooms:
-        bathroom.rating = 0
-        count = -1
-        for rating in all_ratings:
-            if bathroom.id == rating.bathroom_id:
-                if rating.rating is not None:
-                    bathroom.rating += rating.rating
-                    count += 1
-        bathroom.ratings_count = count
-        updated_bathrooms.append(bathroom)
     return render_template(
         'main/index.html',
-        bathrooms=updated_bathrooms
+        bathrooms=Bathroom.query.all()
     )
