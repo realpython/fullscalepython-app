@@ -13,7 +13,11 @@
       <h2>Bathrooms</h2>
       <ul id="list" class="bathroom-list">
         {% for bathroom in bathrooms %}
-          <li data-address="{{bathroom.location}}" data-rating="{{bathroom.rating}}">{{ bathroom.name }}</li>
+          <li
+            data-address="{{bathroom.location}}"
+            data-rating="{{bathroom.rating}}"
+            data-rating-count="{{bathroom.rating_count}}"
+          >{{ bathroom.name }}</li>
         {% endfor %}
       </ul>
     </div>

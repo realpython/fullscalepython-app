@@ -4,7 +4,8 @@ $(document).ready(function () {
     var title = ($(this)).data('title');
     var address = ($(this)).data('address');
     var rating = ($(this)).data('rating');
-    createModal(title, address, rating);
+    var rating_count = ($(this)).data('rating-count');
+    createModal(title, address, rating, rating_count);
   });
 });
 
@@ -28,7 +29,8 @@ function initializeMap() {
         latlong: latlong,
         name: bathroom.name,
         address: bathroom.location,
-        rating: bathroom.rating
+        rating: bathroom.rating,
+        rating_count: bathroom.rating_count
       };
     });
     // createModal();
@@ -65,10 +67,12 @@ function setMarkers(map, bathrooms) {
         var bathroomName = $(this).html();
         var bathroomAddress = $(this).data('address');
         var bathroomRating = $(this).data('rating');
+        var bathroomRatingCount = $(this).data('rating-count');
         var bathroomObject = {
           name: bathroomName,
           address: bathroomAddress,
-          rating: bathroomRating
+          rating: bathroomRating,
+          rating_count: bathroomRatingCount
         };
         markers.forEach(function(marker) {
           if(marker.title === bathroomName) {
@@ -84,14 +88,16 @@ function setMarkers(map, bathrooms) {
 }
 
 function createModalLink(bathroomInfo) {
-  html = '<a id="modal-link" data-title="' +
-    bathroomInfo.name +'" data-address="' +
-    bathroomInfo.address +'" data-rating="' +
-    bathroomInfo.rating + '">View Details</a>';
+  html = '<a id="modal-link"' +
+    'data-title="' + bathroomInfo.name +
+    '" data-address="' + bathroomInfo.address +
+    '" data-rating="' + bathroomInfo.rating +
+    '" data-rating-count="' + bathroomInfo.rating_count +
+    '">View Details</a>';
   return html;
 }
 
-function createModal(title, address, rating) {
+function createModal(title, address, rating, rating_count) {
   html = '<div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
   html += '<div class="modal-dialog" role="document">';
   html += '<div class="modal-content">';
@@ -100,8 +106,9 @@ function createModal(title, address, rating) {
   html += '<h4 class="modal-title" id="myModalLabel">' + title +'</h4>';
   html += '</div>';
   html += '<div class="modal-body">';
-  html += address + '<br>';
-  html += 'Rating: ' + rating;
+  html += address + '<br><br>';
+  html += 'Avergage Rating: ' + rating;
+  html += '<br>' + rating_count + ' total votes';
   html += '</div>';
   html += '</div>';
   html += '</div>';
