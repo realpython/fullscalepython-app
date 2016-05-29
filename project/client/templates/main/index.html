@@ -2,29 +2,37 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-md-8">
-      <h2>Map</h2>
-      <div class="map-container">
-        <div id="map-canvas" class="canvas"></div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <h2>Bathrooms</h2>
-      <ul id="list" class="bathroom-list">
-        {% for bathroom in bathrooms %}
-          <li
-            data-address="{{bathroom.location}}"
-            data-rating="{{bathroom.rating}}"
-            data-rating-count="{{bathroom.rating_count}}"
-          >{{ bathroom.name }}</li>
-        {% endfor %}
-      </ul>
+<div class="row">
+  <div class="col-md-8">
+    <h2>Map</h2>
+    <div class="map-container">
+      <div id="map-canvas" class="canvas"></div>
     </div>
   </div>
-
-  <div id="myModal"></div>
-
+  <div class="col-md-4">
+    <h2>Bathrooms</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Bathroom Name</th>
+          <th>Rating</th>
+          <th>Total Ratings</th>
+          <th>Rate</th>
+        </tr>
+        </thead>
+        <tbody id="bathroom-list" class="bathroom-table-row">
+          {% for bathroom in bathrooms %}
+            <tr>
+              <td id="bathroom-name" data-location="{{ bathroom.location }}" class="bathroom-name">{{ bathroom.name }}</td>
+              <td>{{ bathroom.rating }}</td>
+              <td>{{ bathroom.rating_count }}</td>
+              <td>RATE</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}

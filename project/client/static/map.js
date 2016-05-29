@@ -1,12 +1,5 @@
 $(document).ready(function () {
   initializeMap();
-  $(document).on('click', '#modal-link', function() {
-    var title = ($(this)).data('title');
-    var address = ($(this)).data('address');
-    var rating = ($(this)).data('rating');
-    var rating_count = ($(this)).data('rating-count');
-    createModal(title, address, rating, rating_count);
-  });
 });
 
 var infowindow;
@@ -28,12 +21,11 @@ function initializeMap() {
       return {
         latlong: latlong,
         name: bathroom.name,
-        address: bathroom.location,
+        location: bathroom.location,
         rating: bathroom.rating,
-        rating_count: bathroom.rating_count
+        ratingCount: bathroom.rating_count
       };
     });
-    // createModal();
     setMarkers(map, allBathrooms);
     infowindow = new google.maps.InfoWindow({
       content: "loading..."
@@ -57,62 +49,43 @@ function setMarkers(map, bathrooms) {
       });
       markers.push(marker);
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent('<h4>' + this.title + '</h4>' + createModalLink(bathroom));
+        $('#bathroom-list tr').removeClass('highlight');
+        $('#bathroom-list tr').each(function() {
+          if($(this).find('td:first').text() === marker.title) {
+            $(this).addClass('highlight');
+          }
+        });
+        infowindow.setContent('<h4>' + this.title + '</h4><br>' + bathroom.location);
         infowindow.open(map, this);
       });
+      google.maps.event.addListener(infowindow, 'closeclick', function() {
+          $('#bathroom-list tr').removeClass('highlight');
+      });
       // click to zoom
-      $('#list li').on('click', function() {
+      $('#bathroom-list #bathroom-name').on('click', function() {
         map.setZoom(12);
         map.setCenter(new google.maps.LatLng(40.7829, -73.9654));
         var bathroomName = $(this).html();
-        var bathroomAddress = $(this).data('address');
-        var bathroomRating = $(this).data('rating');
-        var bathroomRatingCount = $(this).data('rating-count');
-        var bathroomObject = {
-          name: bathroomName,
-          address: bathroomAddress,
-          rating: bathroomRating,
-          rating_count: bathroomRatingCount
-        };
+        var bathroomLocation = $(this).data('location');
         markers.forEach(function(marker) {
           if(marker.title === bathroomName) {
             map.setZoom(13);
             map.setCenter(marker.position);
-            infowindow.setContent('<h4>' + bathroomName + '</h4>' + createModalLink(bathroomObject));
+        infowindow.setContent('<h4>' + bathroomName + '</h4><br>' + bathroomLocation);
             infowindow.open(map, marker);
           }
         });
+      });
+      // highlight row
+      $('#bathroom-list tr').on('click', function() {
+        $('#bathroom-list tr').removeClass('highlight');
+        $(this).addClass('highlight');
       });
     });
   });
 }
 
-function createModalLink(bathroomInfo) {
-  html = '<a id="modal-link"' +
-    'data-title="' + bathroomInfo.name +
-    '" data-address="' + bathroomInfo.address +
-    '" data-rating="' + bathroomInfo.rating +
-    '" data-rating-count="' + bathroomInfo.rating_count +
-    '">View Details</a>';
-  return html;
-}
-
-function createModal(title, address, rating, rating_count) {
-  html = '<div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
-  html += '<div class="modal-dialog" role="document">';
-  html += '<div class="modal-content">';
-  html += '<div class="modal-header">';
-  html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-  html += '<h4 class="modal-title" id="myModalLabel">' + title +'</h4>';
-  html += '</div>';
-  html += '<div class="modal-body">';
-  html += address + '<br><br>';
-  html += 'Avergage Rating: ' + rating;
-  html += '<br>' + rating_count + ' total votes';
-  html += '</div>';
-  html += '</div>';
-  html += '</div>';
-  $('#myModal').html('');
-  $('#myModal').html(html);
-  $('#modalWindow').modal();
+function createLink(bathroomName) {
+  var formattedName = bathroomName.toLowerCase().replace(/ /g, '-');
+  return '<a href="/bathrooms/all/#' + formattedName + '">View Details</a>';
 }

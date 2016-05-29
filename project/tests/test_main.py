@@ -14,7 +14,7 @@ class TestMainBlueprint(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Map', response.data)
         self.assertIn(b'<h2>Bathrooms</h2>', response.data)
-        self.assertIn(b'<li\n            data-address="NYC"\n            data-rating="0"\n            data-rating-count="0"\n          >test bathroom</li>', response.data)
+        self.assertIn(b'<td id="bathroom-name" data-location="NYC" class="bathroom-name">test bathroom</td>', response.data)
 
 
 if __name__ == '__main__':
