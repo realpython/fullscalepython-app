@@ -1,3 +1,5 @@
 Name,Location,Open Year-Round,Handicap Accessible,Borough,latlong
+"Alfred E. Smith Park","76 Catherine St, New York, NY 10038","Yes","No","Manhattan","{'lng': -73.997524, 'lat': 40.710640}"
 "Alice Kornegay Triangle","24 W 61st St, New York, NY 10023","Yes","No","Manhattan","{'lng': -73.982886, 'lat': 40.769824}"
-"Augustus St. Gaudens","East 19 to East 20 streets, 2 Avenue","Yes","No","Manhattan","{'lng': -73.982360, 'lat': 40.735629}"
+"Augustus St. Gaudens","East 19 to East 20 streets, 2 Avenue, New York, NY","Yes","No","Manhattan","{'lng': -73.982360, 'lat': 40.735629}"
+"Bleecker Playground","Hudson St & W 11th St, New York, NY 10014","Yes","No","Manhattan","{'lng': -74.005977, 'lat': 40.735844}"
