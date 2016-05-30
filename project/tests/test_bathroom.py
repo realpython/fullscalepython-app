@@ -20,8 +20,6 @@ class TestBathroomBlueprint(BaseTestCase):
             self.assertEqual(data[0]['handicap_accessible'], True)
             self.assertEqual(data[0]['open_year_round'], True)
             self.assertEqual(data[0]['latlong'], "{'lng': -73.9712488, 'lat': 40.7830603}")
-            self.assertEqual(data[0]['rating'], 0)
-            self.assertEqual(data[0]['rating_count'], 0)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@
 from flask.ext.testing import TestCase
 
 from project.server import app, db
-from project.server.models import User, Bathroom
+from project.server.models import User, Bathroom, Rating
 
 
 class BaseTestCase(TestCase):
@@ -32,13 +32,19 @@ class BaseTestCase(TestCase):
             open_year_round=True,
             handicap_accessible=True,
             borough='Manhattan',
-            latlong="{'lng': -73.9712488, 'lat': 40.7830603}",
-            rating=0,
-            rating_count=0
+            latlong="{'lng': -73.9712488, 'lat': 40.7830603}"
         )
         db.session.add(user)
         db.session.add(duplicate_user)
         db.session.add(data)
+        bathroom = Bathroom.query.first()
+        user = User.query.first()
+        rating = Rating(
+            user_id=user.id,
+            bathroom_id=bathroom.id,
+            rating=5
+        )
+        db.session.add(rating)
         db.session.commit()
 
     def tearDown(self):

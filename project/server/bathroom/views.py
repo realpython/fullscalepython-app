@@ -6,9 +6,10 @@
 #############
 
 import json
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request
 
-from project.server.models import Bathroom
+from project.server import db
+from project.server.models import Bathroom, Rating
 
 
 ############
@@ -22,11 +23,24 @@ bathroom_blueprint = Blueprint('bathroom', __name__,)
 #  routes  #
 ############
 
-@bathroom_blueprint.route('/')
+@bathroom_blueprint.route('/', methods=['GET', 'POST'])
 def get_all_bathrooms():
-    all_bathrooms = Bathroom.query.all()
-    resp = Response(
-        json.dumps(Bathroom.serialize_list(all_bathrooms)),
-        mimetype='application/json'
-    )
-    return resp
+    if request.method == 'GET':
+        all_bathrooms = Bathroom.query.all()
+        resp = Response(
+            json.dumps(Bathroom.serialize_list(all_bathrooms)),
+            mimetype='application/json'
+        )
+        return resp
+    elif request.method == 'POST':
+        data = request.get_json()
+        bathroom = Bathroom.query.filter_by(name=data['name']).first()
+        bathroom.id
+        new_rating = Rating(
+            user_id=1,
+            bathroom_id=bathroom.id,
+            rating=data['rating']
+        )
+        db.session.add(new_rating)
+        db.session.commit()
+        return json.dumps({'status': 'success'})

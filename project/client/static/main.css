@@ -14,10 +14,14 @@
   width: 100%;
 }
 
-.bathroom-table-row .bathroom-name {
+.bathroom-table-body .bathroom-name {
   cursor: pointer;
 }
 
 .highlight {
   background-color: #fcf8e3;
+}
+
+.bathroom-star-rating {
+  font-size: .9em;
 }

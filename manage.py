@@ -7,7 +7,7 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 from project.server import app, db
-from project.server.models import Bathroom
+from project.server.models import Bathroom, User, Rating
 
 
 migrate = Migrate(app, db)
@@ -42,6 +42,23 @@ def drop_db():
 @manager.command
 def seed():
     """Seeds the db."""
+    addAdmin()
+    addBathroomsAndRatings()
+
+
+def addAdmin():
+    new_admin = User(
+        email='ad@min.com',
+        username='admin_user',
+        password='admin_user',
+        admin=True
+    )
+    db.session.add(new_admin)
+    db.session.commit()
+
+
+def addBathroomsAndRatings():
+    user = User.query.first()
     with open('bathrooms.csv', 'rt') as f:
         reader = csv.reader(f)
         next(reader, None)
@@ -54,18 +71,24 @@ def seed():
                 handicapBoolean = True
             else:
                 handicapBoolean = False
-            if row[4] == 'Manhattan':
-                db.session.add(Bathroom(
-                    name=row[0],
-                    location=row[1],
-                    open_year_round=openBoolean,
-                    handicap_accessible=handicapBoolean,
-                    borough=row[4],
-                    latlong=row[5],
-                    rating=0,
-                    rating_count=0
-                ))
-    db.session.commit()
+            new_bathroom = Bathroom(
+                name=row[0],
+                location=row[1],
+                open_year_round=openBoolean,
+                handicap_accessible=handicapBoolean,
+                borough=row[4],
+                latlong=row[5]
+            )
+            db.session.add(new_bathroom)
+            db.session.commit()
+            bathroom = Bathroom.query.filter_by(name=row[0]).first()
+            new_rating = Rating(
+                user_id=user.id,
+                bathroom_id=bathroom.id,
+                rating=5
+            )
+            db.session.add(new_rating)
+            db.session.commit()
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ function setMarkers(map, bathrooms) {
           $('#bathroom-list tr').removeClass('highlight');
       });
       // click to zoom
-      $('#bathroom-list #bathroom-name').on('click', function() {
+      $('#bathroom-table #bathroom-name').on('click', function() {
         map.setZoom(12);
         map.setCenter(new google.maps.LatLng(40.7829, -73.9654));
         var bathroomName = $(this).html();
@@ -77,8 +77,8 @@ function setMarkers(map, bathrooms) {
         });
       });
       // highlight row
-      $('#bathroom-list tr').on('click', function() {
-        $('#bathroom-list tr').removeClass('highlight');
+      $('#bathroom-table tr').on('click', function() {
+        $('#bathroom-table tr').removeClass('highlight');
         $(this).addClass('highlight');
       });
     });

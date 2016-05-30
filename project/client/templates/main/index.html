@@ -16,21 +16,21 @@
         <tr>
           <th>Bathroom Name</th>
           <th>Rating</th>
-          <th>Total Ratings</th>
-          <th>Rate</th>
+          <th></th>
         </tr>
-        </thead>
-        <tbody id="bathroom-list" class="bathroom-table-row">
-          {% for bathroom in bathrooms %}
-            <tr>
-              <td id="bathroom-name" data-location="{{ bathroom.location }}" class="bathroom-name">{{ bathroom.name }}</td>
-              <td>{{ bathroom.rating }}</td>
-              <td>{{ bathroom.rating_count }}</td>
-              <td>RATE</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      </thead>
+      <tbody id="bathroom-table" class="bathroom-table-body">
+        {% for bathroom in bathrooms %}
+          <tr>
+            <td id="bathroom-name" data-location="{{ bathroom.location }}" class="bathroom-name">{{ bathroom.name }}</td>
+            <td id="bathroom-rating" class="bathroom-star-rating">
+              <input id="star-input" value="{{ bathroom.rating }}" data-step=1 data-size="xs" data-show-clear="false" data-show-caption="false" class="rating rating-loading">
+            </td>
+            <td id="bathroom-rating-count"><span id="rating-count">{{ bathroom.rating_count }}</span> total ratings</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
