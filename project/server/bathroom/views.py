@@ -37,7 +37,6 @@ def get_all_bathrooms():
         bathroom = Bathroom.query.filter_by(name=data['name']).first()
         bathroom.id
         new_rating = Rating(
-            user_id=1,
             bathroom_id=bathroom.id,
             rating=data['rating']
         )

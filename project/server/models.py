@@ -83,8 +83,7 @@ class Rating(db.Model):
     __tablename__ = 'ratings'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(
-        db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     bathroom_id = db.Column(
         db.Integer, db.ForeignKey('bathrooms.id'), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
