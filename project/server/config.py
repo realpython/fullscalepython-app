@@ -17,7 +17,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/kastanza'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/costanza'
     BCRYPT_LOG_ROUNDS = 4
     WTF_CSRF_ENABLED = False
 
@@ -26,7 +26,7 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/kastanza_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/costanza_test'
     BCRYPT_LOG_ROUNDS = 4
     WTF_CSRF_ENABLED = False
 
