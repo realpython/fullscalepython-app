@@ -15,6 +15,9 @@ $(document).ready(function() {
     })
     .done(function(data) {
       location.reload();
+    })
+    .fail(function(err){
+      console.log(err);
     });
   });
 });
