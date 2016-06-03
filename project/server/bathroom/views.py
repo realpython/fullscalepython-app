@@ -7,7 +7,7 @@
 
 import math
 import json
-from flask import Blueprint, Response, request, jsonify, abort
+from flask import Blueprint, Response, request, abort
 from flask.ext.login import current_user
 
 from project.server import db

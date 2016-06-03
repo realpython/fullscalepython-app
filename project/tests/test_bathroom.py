@@ -26,7 +26,6 @@ class TestBathroomBlueprint(BaseTestCase):
         with self.client:
             response = self.client.post(
                 '/bathrooms/',
-                # jsonify
                 data=json.dumps(dict(
                     name='test bathroom',
                     rating=2
@@ -45,13 +44,20 @@ class TestBathroomBlueprint(BaseTestCase):
             )
             response = self.client.post(
                 '/bathrooms/',
-                data=dict(
+                data=json.dumps(dict(
                     name='test bathroom',
                     rating=2
-                ),
+                )),
+                content_type='application/json',
                 follow_redirects=True)
-            print(response.status_code)
-            self.assertEqual(response.status_code, 401)
+            self.assertEqual(response.status_code, 200)
+            data = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(
+                data['message'],
+                'Thank you. Rating sucessfully recorded.'
+            )
+            self.assertEqual(data['status'], 'success')
+            self.assertEqual(data['data'], {'name': 'test bathroom', 'rating': 4, 'count': 2})
 
 
 if __name__ == '__main__':
