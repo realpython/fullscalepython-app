@@ -5,7 +5,6 @@ $(document).ready(function() {
     // get current values
     var $this = $(this);
     var $currentValue = $this.attr('value');
-    // console.log($('#bathroom-table #bathroom-rating-count'))
     var $currentRatingCount = $this.parent().parent().next().find('#rating-count');
     // send ajax request
     $.ajax({
@@ -25,7 +24,8 @@ $(document).ready(function() {
       $currentRatingCount.html(data.data.count);
     })
     .fail(function(err) {
-      var message = createMessage('danger', err.responseJSON.message);
+      var message = createMessage(
+        'danger', 'You must be logged in to rate.');
       $('#custom-message').html(message);
       $this.rating('update', $currentValue).val();
     });

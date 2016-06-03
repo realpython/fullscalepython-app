@@ -7,7 +7,7 @@
 
 import math
 import json
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, jsonify, abort
 from flask.ext.login import current_user
 
 from project.server import db
@@ -36,11 +36,7 @@ def get_all_bathrooms():
         return resp
     elif request.method == 'POST':
         if not current_user.is_authenticated:  # fail fast!
-            response = json.dumps({
-                'status': 'error',
-                'message': 'You must be logged in to rate.'
-            })
-            return response, 401
+            return abort(401)
         else:
             data = request.get_json()
             bathroom = Bathroom.query.filter_by(name=data['name']).first()
